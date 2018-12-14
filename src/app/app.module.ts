@@ -6,9 +6,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GLModule } from 'gamifilearning-lib';
 import { GraphQLModule } from './graphql.module';
+import { LabelingComponent } from './labeling/labeling.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LabelingComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
