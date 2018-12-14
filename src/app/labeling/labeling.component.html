@@ -1,1 +1,6 @@
-<gl-question-room></gl-question-room>
+<div class="wrapper">
+  <gl-question-room
+    [currentInstance]="currentInstance | async"
+    [maxProgress]="10"
+  ></gl-question-room>
+</div>
