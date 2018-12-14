@@ -1,0 +1,3 @@
+[submodule "projects/gamifilearning-lib"]
+	path = projects/gamifilearning-lib
+	url = https://ducanhtrinh@bitbucket.org/ducanhtrinh/gamifilearning-lib.git
