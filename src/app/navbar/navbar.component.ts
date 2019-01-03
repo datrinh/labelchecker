@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { RewardDialogComponent } from '../reward-dialog/reward-dialog.component';
 
 @Component({
   selector: 'app-navbar',
@@ -8,12 +10,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  constructor(public auth: AuthService, private router: Router) {}
+  constructor(
+    public auth: AuthService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {}
 
   logout() {
     this.auth.logout();
     this.router.navigate(['loggedOut']);
+  }
+
+  test() {
+    this.dialog.open(RewardDialogComponent);
   }
 }

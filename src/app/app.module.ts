@@ -18,10 +18,12 @@ import {
   MatIconModule,
   MatButtonModule,
   MatInputModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatDialogModule
 } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { LoggedOutComponent } from './logged-out/logged-out.component';
+import { RewardDialogComponent } from './reward-dialog/reward-dialog.component';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -32,7 +34,8 @@ const MaterialModules = [
   MatIconModule,
   MatButtonModule,
   MatInputModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatDialogModule
 ];
 @NgModule({
   declarations: [
@@ -40,7 +43,8 @@ const MaterialModules = [
     LabelingComponent,
     LoginComponent,
     NavbarComponent,
-    LoggedOutComponent
+    LoggedOutComponent,
+    RewardDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +56,7 @@ const MaterialModules = [
     FormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [RewardDialogComponent]
 })
 export class AppModule {}
