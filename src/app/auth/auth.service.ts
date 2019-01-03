@@ -41,8 +41,7 @@ export class AuthService {
       .pipe(
         map((res: any) => {
           this.user = res.data.login;
-          window.localStorage.setItem('token', this.user.jwtToken.token);
-          window.localStorage.setItem('userId', this.user.id.toString());
+          this.doLogin(this.user);
           return this.user;
         })
       );
@@ -60,7 +59,7 @@ export class AuthService {
       .subscribe(
         _ => {
           // Logout throws error when token expired?
-          window.localStorage.removeItem('token');
+          this.doLogout();
         },
         err => {
           console.error(err);
@@ -75,5 +74,14 @@ export class AuthService {
 
   isLogged(): boolean {
     return window.localStorage.getItem('token') ? true : false;
+  }
+
+  private doLogin(user: any) {
+    window.localStorage.setItem('token', user.jwtToken.token);
+    window.localStorage.setItem('userId', user.id.toString());
+  }
+
+  private doLogout() {
+    window.localStorage.removeItem('token');
   }
 }

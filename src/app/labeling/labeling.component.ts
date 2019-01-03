@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  CommunicationService,
-  QUESTIONS,
-  QuestionService
-} from 'gamifilearning-lib';
+import { CommunicationService, QuestionService } from 'gamifilearning-lib';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -13,11 +9,10 @@ import { map } from 'rxjs/operators';
 })
 export class LabelingComponent implements OnInit {
   // currentInstance = this.communication.loadData().pipe(map(data => data[0]));
-  // questions = QUESTIONS;
   currentInstance = this.question.currentInstance$;
   constructor(
     private communication: CommunicationService,
-    public question: QuestionService
+    private question: QuestionService
   ) {}
 
   ngOnInit() {}
