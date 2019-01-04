@@ -8,7 +8,7 @@ import { GamificationService } from 'gamifilearning-lib';
 })
 export class RewardDialogComponent implements OnInit {
   trivia = this.gamification.getTrivia();
-  pic = this.gamification.getPicOfTheDay();
+  pic = this.gamification.getRandomGif('thanks');
   constructor(private gamification: GamificationService) {}
 
   ngOnInit() {
