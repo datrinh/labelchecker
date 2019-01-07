@@ -23,7 +23,6 @@ import {
 } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { LoggedOutComponent } from './logged-out/logged-out.component';
-import { RewardDialogComponent } from './reward-dialog/reward-dialog.component';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -43,8 +42,7 @@ const MaterialModules = [
     LabelingComponent,
     LoginComponent,
     NavbarComponent,
-    LoggedOutComponent,
-    RewardDialogComponent
+    LoggedOutComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +54,6 @@ const MaterialModules = [
     FormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  entryComponents: [RewardDialogComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

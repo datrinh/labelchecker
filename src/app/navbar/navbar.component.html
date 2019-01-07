@@ -2,7 +2,7 @@
   <span class="spacer"></span>
 
   <div *ngIf="auth.isLogged(); else notLogged">
-    <gl-score-display (click)="test()"></gl-score-display>
+    <gl-score-display></gl-score-display>
     <button [matMenuTriggerFor]="menu" class="toolbar-item" mat-icon-button>
       <mat-icon matBadge="4" matBadgeColor="accent">person</mat-icon>
     </button>

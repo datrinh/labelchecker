@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
-import { RewardDialogComponent } from '../reward-dialog/reward-dialog.component';
 
 @Component({
   selector: 'app-navbar',
@@ -21,9 +20,5 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.auth.logout();
     this.router.navigate(['loggedOut']);
-  }
-
-  test() {
-    this.dialog.open(RewardDialogComponent);
   }
 }
