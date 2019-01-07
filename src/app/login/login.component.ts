@@ -28,9 +28,16 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.showSpinner = true;
-    this.auth.login(this.username, this.password).subscribe(res => {
-      this.showSpinner = false;
-      this.router.navigate(['/labeling']);
-    });
+    this.auth.login(this.username, this.password).subscribe(
+      res => {
+        this.showSpinner = false;
+        this.router.navigate(['/labeling']);
+      },
+      err => {
+        this.showSpinner = false;
+        this.password = '';
+        console.log('err');
+      }
+    );
   }
 }
