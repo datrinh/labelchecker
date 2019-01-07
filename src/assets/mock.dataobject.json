@@ -8,7 +8,7 @@
     {
       "featureId": "3",
       "question": {
-        "questionId": "isRelevant",
+        "questionId": "isEvent",
         "possibleAnswers": ["yes", "maybe", "no"]
       }
     },
