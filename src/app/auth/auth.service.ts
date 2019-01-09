@@ -1,17 +1,10 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
-
-export interface User {
-  id: number;
-  username: string;
-  jwtToken: {
-    token: string;
-  };
-}
+import { User } from '../communication/communication.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -58,17 +51,18 @@ export class AuthService {
       })
       .subscribe(
         _ => {
-          // Logout throws error when token expired?
+          // TODO: Logout throws error when token expired?
           this.doLogout();
         },
         err => {
           console.error(err);
-          // window.localStorage.removeItem('token');
+          // logout when expired too;
+          this.doLogout();
         }
       );
   }
 
-  getCurrentUserId() {
+  getCurrentUserId(): string | number | null {
     return this.user.id || window.localStorage.getItem('userId') || null;
   }
 
@@ -76,12 +70,13 @@ export class AuthService {
     return window.localStorage.getItem('token') ? true : false;
   }
 
-  private doLogin(user: any) {
+  private doLogin(user: User) {
     window.localStorage.setItem('token', user.jwtToken.token);
     window.localStorage.setItem('userId', user.id.toString());
   }
 
   private doLogout() {
     window.localStorage.removeItem('token');
+    window.localStorage.removeItem('userId');
   }
 }
