@@ -1,7 +1,10 @@
 <div class="wrapper">
   <gl-question-room
     [currentInstance]="currentInstance | async"
-    [maxProgress]="10"
+    [done]="(progress | async).done"
+    [maxProgress]="(progress | async).total"
     [questions]="questions | async"
+    [answers]="answers | async"
+    [rewards]="rewards"
   ></gl-question-room>
 </div>

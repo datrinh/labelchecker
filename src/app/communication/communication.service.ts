@@ -2,23 +2,36 @@ import { Injectable } from '@angular/core';
 import { Document, Progress, Answer } from './communication.interfaces';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApolloQueryResult } from 'apollo-client';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommunicationService {
-  constructor(private apollo: Apollo, private http: HttpClient) {}
+  private currentDocument = new BehaviorSubject<Document>(null);
+  currentDocument$ = this.currentDocument.asObservable();
+  mockProgress: Progress = {
+    total: 100,
+    done: 0
+  };
+  constructor(private apollo: Apollo, private http: HttpClient) {
+    this.init();
+  }
 
-  getNextDocument(datasetId: string): Observable<Document> {
+  init() {
+    this.getNextDocument().subscribe(doc => {
+      this.currentDocument.next(doc);
+    });
+  }
+
+  getNextDocument(): Observable<Document> {
     // return this.apollo
     //   .query({
     //     query: gql`
     //       {
-    //         getNextDocumentToLabel(datasetId: "${datasetId}") {
+    //         getNextDocumentToLabel() {
     //           id,
     //           text
     //         }
@@ -28,36 +41,40 @@ export class CommunicationService {
     //   .pipe(map((res: any) => res.data.getNextDocumentToLabel));
 
     // Mock
-    return this.http.get<Document>('assets/mock.dataobject.json').pipe(
-      map(obj => {
-        this.http
-          .get<string>('https://icanhazdadjoke.com/', {
-            headers: new HttpHeaders({
-              Accept: 'application/json'
-            })
-          })
-          .subscribe((quote: any) => {
-            obj.text = quote.joke;
-          });
-        obj.id = Math.floor(Math.random() * 100).toString();
-        return obj;
+    return this.http
+      .get<string>('https://icanhazdadjoke.com/', {
+        headers: new HttpHeaders({
+          Accept: 'application/json'
+        })
       })
-    );
+      .pipe(
+        map((res: any) => {
+          const nextDoc = {
+            id: Math.floor(Math.random() * 100).toString(),
+            text: res.joke
+          };
+          this.currentDocument.next(nextDoc);
+          return nextDoc;
+        })
+      );
   }
 
-  getProgress(datasetId: string): Observable<Progress> {
-    return this.apollo
-      .query({
-        query: gql`
-          {
-            getProgress(datasetId: "${datasetId}") {
-              total,
-              done
-            }
-          }
-        `
-      })
-      .pipe(map((res: any) => res.data.getProgress));
+  getProgress(): Observable<Progress> {
+    // return this.apollo
+    //   .query({
+    //     query: gql`
+    //       {
+    //         getProgress() {
+    //           total,
+    //           done
+    //         }
+    //       }
+    //     `
+    //   })
+    //   .pipe(map((res: any) => res.data.getProgress));
+
+    // Mock
+    return of(this.mockProgress);
   }
 
   getQuestionIds(): Observable<string[]> {
@@ -73,6 +90,10 @@ export class CommunicationService {
 
     // Mock
     return of(['isMusic', 'isEvent']);
+  }
+
+  getAnswers(): Observable<string[]> {
+    return of(['yes', 'maybe', 'no']);
   }
 
   saveAnswers(answers: Answer[]): Observable<boolean> {
@@ -91,6 +112,11 @@ export class CommunicationService {
     // });
 
     // Mock
-    return of(true);
+    if (answers.length) {
+      console.log('Sending to backend:', answers);
+      return of(true);
+    } else {
+      return of(false);
+    }
   }
 }

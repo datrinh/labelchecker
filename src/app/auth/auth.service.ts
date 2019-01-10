@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import { User } from '../communication/communication.interfaces';
 
@@ -12,7 +11,7 @@ import { User } from '../communication/communication.interfaces';
 export class AuthService {
   user: User;
 
-  constructor(private apollo: Apollo, private router: Router) {}
+  constructor(private apollo: Apollo) {}
 
   login(username: string, password: string): Observable<User> {
     return this.apollo
