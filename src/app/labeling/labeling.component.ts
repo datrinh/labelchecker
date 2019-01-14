@@ -36,14 +36,5 @@ export class LabelingComponent implements OnInit {
         flatMap(_ => this.communication.getNextDocument())
       )
       .subscribe();
-
-    // .subscribe((answers: Answer[]) => {
-    //   // answers is initiated with []. Check for it
-    //   if (answers.length) {
-    //     this.communication.saveAnswers(answers).subscribe(succ => {
-    //       this.communication.getNextDocument().subscribe();
-    //     });
-    //   }
-    // });
   }
 }

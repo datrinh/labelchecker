@@ -13,8 +13,8 @@ export class CommunicationService {
   private currentDocument = new BehaviorSubject<Document>(null);
   currentDocument$ = this.currentDocument.asObservable();
   mockProgress: Progress = {
-    total: 100,
-    done: 0
+    total: 10,
+    done: 2
   };
   constructor(private apollo: Apollo, private http: HttpClient) {
     this.init();
