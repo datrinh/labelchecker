@@ -1,9 +1,3 @@
-export interface Decision {
-  documentId: string;
-  questionId: string;
-  answer: string;
-}
-
 export interface Progress {
   total: number;
   done: number;
