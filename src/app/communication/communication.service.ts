@@ -93,7 +93,8 @@ export class CommunicationService {
   }
 
   getAnswers(): Observable<string[]> {
-    return of(['yes', 'maybe', 'no']);
+    // return of(['yes', 'maybe', 'no']);
+    return of(['1', '2', '3', '4', '5']);
   }
 
   saveAnswers(answers: Answer[]): Observable<boolean> {
