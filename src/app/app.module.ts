@@ -23,6 +23,7 @@ import {
 } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { LoggedOutComponent } from './logged-out/logged-out.component';
+import { HelpComponent } from './help/help.component';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -42,7 +43,8 @@ const MaterialModules = [
     LabelingComponent,
     LoginComponent,
     NavbarComponent,
-    LoggedOutComponent
+    LoggedOutComponent,
+    HelpComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +56,7 @@ const MaterialModules = [
     FormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [HelpComponent]
 })
 export class AppModule {}

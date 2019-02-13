@@ -4,7 +4,7 @@ import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 
-const uri = 'http://meslis-test-3.corp.deecoob.com:58190/graphql';
+const uri = 'http://meslis-test-3.corp.deecoob.com:58192/graphql';
 export function createApollo(httpLink: HttpLink) {
   const http = httpLink.create({ uri: uri });
 

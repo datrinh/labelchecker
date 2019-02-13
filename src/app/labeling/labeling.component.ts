@@ -3,6 +3,7 @@ import { QuestionService } from 'gamifilearning-lib';
 import { map, flatMap } from 'rxjs/operators';
 import { CommunicationService } from '../communication/communication.service';
 import { Answer } from '../communication/communication.interfaces';
+import { REWARDS } from './rewards';
 
 @Component({
   selector: 'app-labeling',
@@ -13,11 +14,7 @@ export class LabelingComponent implements OnInit {
   currentInstance;
   questions;
   progress;
-  rewards = [
-    { icon: 'whatshot', position: 25, unlocked: false },
-    { icon: 'whatshot', position: 50, unlocked: false },
-    { icon: 'whatshot', position: 75, unlocked: false }
-  ];
+  rewards = REWARDS;
   answers;
   constructor(
     private communication: CommunicationService,

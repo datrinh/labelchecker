@@ -13,8 +13,8 @@ export class CommunicationService {
   private currentDocument = new BehaviorSubject<Document>(null);
   currentDocument$ = this.currentDocument.asObservable();
   mockProgress: Progress = {
-    total: 10,
-    done: 2
+    total: 1500,
+    done: 99
   };
   constructor(private apollo: Apollo, private http: HttpClient) {
     this.init();
@@ -27,36 +27,45 @@ export class CommunicationService {
   }
 
   getNextDocument(): Observable<Document> {
-    // return this.apollo
-    //   .query({
-    //     query: gql`
-    //       {
-    //         getNextDocumentToLabel() {
-    //           id,
-    //           text
-    //         }
-    //       }
-    //     `
-    //   })
-    //   .pipe(map((res: any) => res.data.getNextDocumentToLabel));
-
-    // Mock
-    return this.http
-      .get<string>('https://icanhazdadjoke.com/', {
-        headers: new HttpHeaders({
-          Accept: 'application/json'
-        })
+    return this.apollo
+      .query({
+        query: gql`
+          {
+            getNextDocumentToLabel {
+              id
+              text
+            }
+          }
+        `
       })
       .pipe(
         map((res: any) => {
           const nextDoc = {
-            id: Math.floor(Math.random() * 100).toString(),
-            text: res.joke
+            id: res.id,
+            text: res.text
           };
           this.currentDocument.next(nextDoc);
           return nextDoc;
         })
       );
+
+    // Mock
+    // return this.http
+    //   .get<string>('https://icanhazdadjoke.com/', {
+    //     headers: new HttpHeaders({
+    //       Accept: 'application/json'
+    //     })
+    //   })
+    //   .pipe(
+    //     map((res: any) => {
+    //       const nextDoc = {
+    //         id: Math.floor(Math.random() * 100).toString(),
+    //         text: res.joke
+    //       };
+    //       this.currentDocument.next(nextDoc);
+    //       return nextDoc;
+    //     })
+    //   );
   }
 
   getProgress(): Observable<Progress> {
@@ -82,42 +91,56 @@ export class CommunicationService {
     //   .query({
     //     query: gql`
     //       {
-    //         getQuestionIds()
+    //         getQuestionIds
     //       }
     //     `
     //   })
-    //   .pipe(map((res: any) => res.data.getQuestionIds));
+    //   .pipe(map((res: any) => res.data));
 
     // Mock
-    return of(['isMusic', 'isEvent']);
+    return of(['isMusic', 'isMovie', 'isEvent']);
   }
 
   getAnswers(): Observable<string[]> {
     // return of(['yes', 'maybe', 'no']);
-    return of(['1', '2', '3', '4', '5']);
+    // return of(['1', '2', '3', '4', '5']);
+    return of([
+      'Trifft nicht zu',
+      'Trifft eher nicht zu',
+      'Weiß nicht',
+      'Trifft eher zu',
+      'Trifft zu'
+    ]);
   }
 
   saveAnswers(answers: Answer[]): Observable<boolean> {
-    // return this.apollo.mutate({
-    //   mutation: gql`
-    //       {
-    //         saveDecision(decisions: "${answers}")
-    //       }
-    //     `
-    //   // TODO: review
-    //   // optimisticResponse: {
-    //   //   data: {
-    //   //     saveAnswers: true
-    //   //   }
-    //   // }
-    // });
-
-    // Mock
     if (answers.length) {
       console.log('Sending to backend:', answers);
-      return of(true);
+      return this.apollo.mutate({
+        mutation: gql`
+          mutation saveDecision($decisions: [DecisionInput]!) {
+            saveDecision(decisions: $decisions)
+          }
+        `,
+        variables: {
+          decisions: answers
+        }
+        // optimisticResponse: {
+        //   data: {
+        //     saveAnswers: true
+        //   }
+        // }
+      });
     } else {
       return of(false);
     }
+
+    // Mock
+    //   if (answers.length) {
+    //     console.log('Sending to backend:', answers);
+    //     return of(true);
+    //   } else {
+    //     return of(false);
+    //   }
   }
 }

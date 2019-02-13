@@ -1,10 +1,12 @@
 <mat-toolbar color="primary">
   <span class="spacer"></span>
-
+  <button (click)="openHelpPage()" class="toolbar-item" mat-icon-button>
+    <mat-icon>help</mat-icon>
+  </button>
   <div *ngIf="auth.isLogged(); else notLogged">
     <!-- <gl-score-display></gl-score-display> -->
     <button [matMenuTriggerFor]="menu" class="toolbar-item" mat-icon-button>
-      <mat-icon matBadge="4" matBadgeColor="accent">person</mat-icon>
+      <mat-icon>person</mat-icon>
     </button>
   </div>
 
@@ -13,7 +15,7 @@
   </ng-template>
 </mat-toolbar>
 <mat-menu #menu="matMenu">
-  <button mat-menu-item disabled>Kontostand</button>
-  <button mat-menu-item disabled>Katzenvideos</button>
+  <!-- <button mat-menu-item disabled>Kontostand</button>
+  <button mat-menu-item disabled>Katzenvideos</button> -->
   <button mat-menu-item (click)="logout()">Logout</button>
 </mat-menu>
