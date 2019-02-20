@@ -30,7 +30,7 @@ export class CommunicationService {
   init() {
     this.getNextDocument().subscribe(
       doc => {
-        this.currentDocument.next(doc);
+        // this.currentDocument.next(doc);
       },
       // Kinda hacky. Logout should be handled
       err => {
@@ -58,7 +58,7 @@ export class CommunicationService {
             id: res.data.getNextDocumentToLabel.id,
             text: res.data.getNextDocumentToLabel.text
           };
-          // this.currentDocument.next(nextDoc);
+          this.currentDocument.next(nextDoc);
           return nextDoc;
         })
       );

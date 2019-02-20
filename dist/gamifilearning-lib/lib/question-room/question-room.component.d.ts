@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { OnInit, OnChanges } from '@angular/core';
 import { QuestionService } from '../shared/question.service';
 import { MatSelectionList } from '@angular/material/list';
 import { GamificationService } from '../shared/gamification.service';
@@ -9,7 +9,7 @@ export interface Reward {
     unlocked: boolean;
     icon: string;
 }
-export declare class QuestionRoomComponent implements OnInit {
+export declare class QuestionRoomComponent implements OnInit, OnChanges {
     private question;
     private gamification;
     private dialog;
@@ -28,6 +28,7 @@ export declare class QuestionRoomComponent implements OnInit {
     selection: MatSelectionList;
     constructor(question: QuestionService, gamification: GamificationService, dialog: MatDialog, snack: MatSnackBar);
     ngOnInit(): void;
+    ngOnChanges(changes: any): void;
     isDone(): boolean;
     sendAnswer(answer: string): void;
     claimReward(reward: any): void;
@@ -38,6 +39,7 @@ export declare class QuestionRoomComponent implements OnInit {
     onKey(event: KeyboardEvent): boolean;
     private createAnswer;
     private updateRewards;
+    private doUpdateRewards;
     submitAnswer(answer: string): void;
     mockAchievementCheck(): void;
 }
