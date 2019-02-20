@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import sjcl from 'sjcl';
 
 export const MESLISPW =
   '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08';
@@ -20,24 +21,37 @@ export interface User {
 export class LoginComponent implements OnInit {
   showSpinner = false;
   user: User;
-  username = MESLISUSER;
-  password = MESLISPW;
+  username = '';
+  password = '';
   constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit() {}
 
   login() {
     this.showSpinner = true;
-    this.auth.login(this.username, this.password).subscribe(
-      res => {
-        this.showSpinner = false;
-        this.router.navigate(['/labeling']);
-      },
-      err => {
-        this.showSpinner = false;
-        this.password = '';
-        console.log('err');
-      }
-    );
+    this.auth
+      .login(this.username, this.generateSha256(this.password))
+      .subscribe(
+        res => {
+          this.showSpinner = false;
+          this.router.navigate(['/labeling']);
+        },
+        err => {
+          this.showSpinner = false;
+          this.password = '';
+          console.log('err');
+        }
+      );
+  }
+
+  private generateSha256(input) {
+    if (input === null) {
+      return 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+    }
+
+    const hash = sjcl.hash.sha256.hash(input);
+    const output = sjcl.codec.hex.fromBits(hash);
+
+    return output;
   }
 }
