@@ -7,6 +7,16 @@ import { setContext } from 'apollo-link-context';
 const uri = 'http://meslis-test-3.corp.deecoob.com:58192/graphql';
 export function createApollo(httpLink: HttpLink) {
   const http = httpLink.create({ uri: uri });
+  const defaultOptions = {
+    watchQuery: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'ignore'
+    },
+    query: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all'
+    }
+  };
 
   const auth = setContext(_ => {
     // get the authentication token from local storage if it exists
@@ -23,7 +33,8 @@ export function createApollo(httpLink: HttpLink) {
   });
   return {
     link: auth.concat(http),
-    cache: new InMemoryCache()
+    cache: new InMemoryCache(),
+    defaultOptions: defaultOptions
   };
 }
 
