@@ -1,0 +1,21 @@
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/*
+ * Public API Surface of gamifilearning-lib
+ */
+export { GLModule } from './lib/app.module';
+export { RootComponent } from './lib/app.component';
+export { QuestionRoomComponent } from './lib/question-room/question-room.component';
+export { ScoreDisplayComponent } from './lib/score-display/score-display.component';
+export { NavbarComponent } from './lib/navbar/navbar.component';
+export { LeaderboardComponent } from './lib/leaderboard/leaderboard.component';
+export { ChartComponent } from './lib/chart/chart.component';
+export { DashboardComponent } from './lib/dashboard/dashboard.component';
+export { CommunicationService } from './lib/shared/communication.service';
+export { QuestionService } from './lib/shared/question.service';
+export { UserService } from './lib/shared/user.service';
+export { GamificationService } from './lib/shared/gamification.service';
+export {} from './lib/shared/data.interface';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljX2FwaS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL2dhbWlmaWxlYXJuaW5nLWxpYi8iLCJzb3VyY2VzIjpbInB1YmxpY19hcGkudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUlBLHlCQUFjLGtCQUFrQixDQUFDO0FBQ2pDLDhCQUFjLHFCQUFxQixDQUFDO0FBQ3BDLHNDQUFjLDZDQUE2QyxDQUFDO0FBQzVELHNDQUFjLDZDQUE2QyxDQUFDO0FBQzVELGdDQUFjLCtCQUErQixDQUFDO0FBQzlDLHFDQUFjLHlDQUF5QyxDQUFDO0FBQ3hELCtCQUFjLDZCQUE2QixDQUFDO0FBQzVDLG1DQUFjLHFDQUFxQyxDQUFDO0FBQ3BELHFDQUFjLG9DQUFvQyxDQUFDO0FBQ25ELGdDQUFjLCtCQUErQixDQUFDO0FBQzlDLDRCQUFjLDJCQUEyQixDQUFDO0FBQzFDLG9DQUFjLG1DQUFtQyxDQUFDO0FBQ2xELGVBQWMsNkJBQTZCLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxyXG4gKiBQdWJsaWMgQVBJIFN1cmZhY2Ugb2YgZ2FtaWZpbGVhcm5pbmctbGliXHJcbiAqL1xyXG5cclxuZXhwb3J0ICogZnJvbSAnLi9saWIvYXBwLm1vZHVsZSc7XHJcbmV4cG9ydCAqIGZyb20gJy4vbGliL2FwcC5jb21wb25lbnQnO1xyXG5leHBvcnQgKiBmcm9tICcuL2xpYi9xdWVzdGlvbi1yb29tL3F1ZXN0aW9uLXJvb20uY29tcG9uZW50JztcclxuZXhwb3J0ICogZnJvbSAnLi9saWIvc2NvcmUtZGlzcGxheS9zY29yZS1kaXNwbGF5LmNvbXBvbmVudCc7XHJcbmV4cG9ydCAqIGZyb20gJy4vbGliL25hdmJhci9uYXZiYXIuY29tcG9uZW50JztcclxuZXhwb3J0ICogZnJvbSAnLi9saWIvbGVhZGVyYm9hcmQvbGVhZGVyYm9hcmQuY29tcG9uZW50JztcclxuZXhwb3J0ICogZnJvbSAnLi9saWIvY2hhcnQvY2hhcnQuY29tcG9uZW50JztcclxuZXhwb3J0ICogZnJvbSAnLi9saWIvZGFzaGJvYXJkL2Rhc2hib2FyZC5jb21wb25lbnQnO1xyXG5leHBvcnQgKiBmcm9tICcuL2xpYi9zaGFyZWQvY29tbXVuaWNhdGlvbi5zZXJ2aWNlJztcclxuZXhwb3J0ICogZnJvbSAnLi9saWIvc2hhcmVkL3F1ZXN0aW9uLnNlcnZpY2UnO1xyXG5leHBvcnQgKiBmcm9tICcuL2xpYi9zaGFyZWQvdXNlci5zZXJ2aWNlJztcclxuZXhwb3J0ICogZnJvbSAnLi9saWIvc2hhcmVkL2dhbWlmaWNhdGlvbi5zZXJ2aWNlJztcclxuZXhwb3J0ICogZnJvbSAnLi9saWIvc2hhcmVkL2RhdGEuaW50ZXJmYWNlJztcclxuIl19
