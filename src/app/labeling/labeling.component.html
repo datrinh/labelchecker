@@ -1,8 +1,8 @@
 <div class="wrapper">
   <gl-question-room
     [currentInstance]="currentInstance | async"
-    [done]="(progress | async).done"
-    [maxProgress]="(progress | async).total"
+    [done]="(progress | async)?.done"
+    [maxProgress]="(progress | async)?.total"
     [questions]="questions | async"
     [answers]="answers | async"
     [answerMode]="'stars'"

@@ -41,63 +41,63 @@ export class CommunicationService {
   }
 
   getNextDocument(): Observable<Document> {
-    // return this.apollo
-    //   .query({
-    //     query: gql`
-    //       {
-    //         getNextDocumentToLabel {
-    //           id
-    //           text
-    //         }
-    //       }
-    //     `
+    return this.apollo
+      .query({
+        query: gql`
+          {
+            getNextDocumentToLabel {
+              id
+              text
+            }
+          }
+        `
+      })
+      .pipe(
+        map((res: any) => {
+          const nextDoc = {
+            id: res.data.getNextDocumentToLabel.id,
+            text: res.data.getNextDocumentToLabel.text
+          };
+          // this.currentDocument.next(nextDoc);
+          return nextDoc;
+        })
+      );
+
+    // Mock
+    // return this.http
+    //   .get<string>('https://icanhazdadjoke.com/', {
+    //     headers: new HttpHeaders({
+    //       Accept: 'application/json'
+    //     })
     //   })
     //   .pipe(
     //     map((res: any) => {
     //       const nextDoc = {
-    //         id: res.id,
-    //         text: res.text
+    //         id: Math.floor(Math.random() * 100).toString(),
+    //         text: res.joke
     //       };
     //       this.currentDocument.next(nextDoc);
     //       return nextDoc;
     //     })
     //   );
-
-    // Mock
-    return this.http
-      .get<string>('https://icanhazdadjoke.com/', {
-        headers: new HttpHeaders({
-          Accept: 'application/json'
-        })
-      })
-      .pipe(
-        map((res: any) => {
-          const nextDoc = {
-            id: Math.floor(Math.random() * 100).toString(),
-            text: res.joke
-          };
-          this.currentDocument.next(nextDoc);
-          return nextDoc;
-        })
-      );
   }
 
   getProgress(): Observable<Progress> {
-    // return this.apollo
-    //   .query({
-    //     query: gql`
-    //       {
-    //         getProgress() {
-    //           total,
-    //           done
-    //         }
-    //       }
-    //     `
-    //   })
-    //   .pipe(map((res: any) => res.data.getProgress));
+    return this.apollo
+      .query({
+        query: gql`
+          {
+            getProgress {
+              total
+              done
+            }
+          }
+        `
+      })
+      .pipe(map((res: any) => res.data.getProgress));
 
     // Mock
-    return of(this.mockProgress);
+    // return of(this.mockProgress);
   }
 
   getQuestionIds(): Observable<string[]> {
