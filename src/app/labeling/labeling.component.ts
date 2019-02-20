@@ -29,7 +29,7 @@ export class LabelingComponent implements OnInit {
 
     this.question.answers$
       .pipe(
-        flatMap(answers => this.communication.saveAnswers(answers)),
+        flatMap((answers: Answer[]) => this.communication.saveAnswers(answers)),
         flatMap(_ => this.communication.getNextDocument())
       )
       .subscribe();

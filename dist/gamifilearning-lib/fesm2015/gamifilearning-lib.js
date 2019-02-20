@@ -6,7 +6,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialog, MatSnackBar, MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatProgressBarModule, MatInputModule, MatTableModule, MatToolbarModule, MatBadgeModule, MatListModule, MatProgressSpinnerModule, MatTooltipModule, MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { style, animation, animate, keyframes, trigger, transition, useAnimation } from '@angular/animations';
 import { FormsModule } from '@angular/forms';
-import { Component, Injectable, Inject, Pipe, ViewChild, Input, defineInjectable, inject, NgModule } from '@angular/core';
+import { Component, Injectable, Pipe, Inject, ViewChild, Input, defineInjectable, inject, NgModule } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
