@@ -10,7 +10,7 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
-  { path: 'labeling', component: LabelingComponent, canActivate: [AuthGuard] },
+  { path: 'labeling', component: LabelingComponent, canActivate: [] },
   { path: 'loggedOut', component: LoggedOutComponent },
   { path: '', pathMatch: 'full', redirectTo: '/labeling' }
 ];

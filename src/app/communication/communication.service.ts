@@ -3,7 +3,7 @@ import { Document, Progress, Answer } from './communication.interfaces';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
@@ -18,6 +18,8 @@ export class CommunicationService {
     total: 1500,
     done: 99
   };
+  mockData;
+  mockCounter = 0;
   constructor(
     private apollo: Apollo,
     private auth: AuthService,
@@ -32,7 +34,7 @@ export class CommunicationService {
       doc => {
         // this.currentDocument.next(doc);
       },
-      // Kinda hacky. Logout should be handled
+      // Kinda hacky. Logout should be handled somewhere else
       err => {
         this.auth.logout();
         this.router.navigate(['login']);
@@ -41,27 +43,48 @@ export class CommunicationService {
   }
 
   getNextDocument(): Observable<Document> {
-    return this.apollo
-      .query({
-        query: gql`
-          {
-            getNextDocumentToLabel {
-              id
-              text
-            }
-          }
-        `
+    // return this.apollo
+    //   .query({
+    //     query: gql`
+    //       {
+    //         getNextDocumentToLabel {
+    //           id
+    //           text
+    //         }
+    //       }
+    //     `
+    //   })
+    //   .pipe(
+    //     map((res: any) => {
+    //       const nextDoc = {
+    //         id: res.data.getNextDocumentToLabel.id,
+    //         text: res.data.getNextDocumentToLabel.text
+    //       };
+    //       this.currentDocument.next(nextDoc);
+    //       return nextDoc;
+    //     })
+    //   );
+    return this.http.get<Document[]>('assets/mock_data_lc.json').pipe(
+      map(res => res[this.mockCounter++]),
+      map(res => {
+        console.log(res);
+        const nextDoc = {
+          id: res['articleId'],
+          text: res['text']
+        };
+        this.currentDocument.next(nextDoc);
+        return nextDoc;
       })
-      .pipe(
-        map((res: any) => {
-          const nextDoc = {
-            id: res.data.getNextDocumentToLabel.id,
-            text: res.data.getNextDocumentToLabel.text
-          };
-          this.currentDocument.next(nextDoc);
-          return nextDoc;
-        })
-      );
+    );
+    //   this.mockData = res.map(obj => {
+    //     return {
+    //       id: obj['values']['2'],
+    //       text: obj['features']['1']['4']
+    //     };
+    //   });
+    // });
+    // console.log(this.mockData);
+    // return of(this.mockData[0]);
 
     // Mock
     // return this.http
@@ -83,21 +106,21 @@ export class CommunicationService {
   }
 
   getProgress(): Observable<Progress> {
-    return this.apollo
-      .query({
-        query: gql`
-          {
-            getProgress {
-              total
-              done
-            }
-          }
-        `
-      })
-      .pipe(map((res: any) => res.data.getProgress));
+    // return this.apollo
+    //   .query({
+    //     query: gql`
+    //       {
+    //         getProgress {
+    //           total
+    //           done
+    //         }
+    //       }
+    //     `
+    //   })
+    //   .pipe(map((res: any) => res.data.getProgress));
 
     // Mock
-    // return of(this.mockProgress);
+    return of(this.mockProgress);
   }
 
   getQuestionIds(): Observable<string[]> {
@@ -112,33 +135,40 @@ export class CommunicationService {
     //   .pipe(map((res: any) => res.data));
 
     // Mock
-    return of(['isMusic', 'isMovie', 'isEvent']);
+    return of(['isMusic']);
   }
 
   getAnswers(): Observable<string[]> {
-    // return of(['yes', 'maybe', 'no']);
+    return of(['0', '-1', '1']);
     // return of(['1', '2', '3', '4', '5']);
-    return of(['1', '2', '3', '4', '5']);
   }
 
   saveAnswers(answers: Answer[]): Observable<boolean> {
     if (answers.length) {
       console.log('Sending to backend:', answers);
-      return this.apollo.mutate({
-        mutation: gql`
-          mutation saveDecision($decisions: [DecisionInput]!) {
-            saveDecision(decisions: $decisions)
-          }
-        `,
-        variables: {
-          decisions: answers
-        }
-        // optimisticResponse: {
-        //   data: {
-        //     saveAnswers: true
-        //   }
-        // }
-      });
+      const answer: any = answers[0];
+      answer.text = this.currentDocument.value.text;
+      this.http
+        .post('http://127.0.0.1:5000/label', JSON.stringify(answer))
+        .subscribe(res => {
+          console.log('Backend res:', res);
+        });
+      // return this.apollo.mutate({
+      //   mutation: gql`
+      //     mutation saveDecision($decisions: [DecisionInput]!) {
+      //       saveDecision(decisions: $decisions)
+      //     }
+      //   `,
+      //   variables: {
+      //     decisions: answers
+      //   }
+      //   // optimisticResponse: {
+      //   //   data: {
+      //   //     saveAnswers: true
+      //   //   }
+      //   // }
+      // });
+      return of(true);
     } else {
       return of(false);
     }

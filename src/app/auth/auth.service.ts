@@ -40,25 +40,25 @@ export class AuthService {
   }
 
   logout(): void {
-    this.apollo
-      .query({
-        query: gql`
-          {
-            logout
-          }
-        `
-      })
-      .subscribe(
-        _ => {
-          // TODO: Logout throws error when token expired?
-          this.doLogout();
-        },
-        err => {
-          console.error(err);
-          // logout when expired too;
-          this.doLogout();
-        }
-      );
+    // this.apollo
+    //   .query({
+    //     query: gql`
+    //       {
+    //         logout
+    //       }
+    //     `
+    //   })
+    //   .subscribe(
+    //     _ => {
+    //       // TODO: Logout throws error when token expired?
+    //       this.doLogout();
+    //     },
+    //     err => {
+    //       console.error(err);
+    //       // logout when expired too;
+    //       this.doLogout();
+    //     }
+    //   );
   }
 
   getCurrentUserId(): string | number | null {
