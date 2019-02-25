@@ -16,19 +16,19 @@ export class AuthService {
   constructor(private apollo: Apollo, private dialog: MatDialog) {}
 
   login(username: string, password: string): Observable<User> {
-    return this.apollo
+    const response = this.apollo
       .query({
         query: gql`
-          {
-            login(username: "${username}", password: "${password}") {
-              id,
-              username,
-              jwtToken {
-                token
-              }
-            }
-          }
-        `
+           {
+             login(username: "${username}", password: "${password}") {
+               id,
+               username,
+               jwtToken {
+                 token
+               }
+             }
+           }
+         `
       })
       .pipe(
         map((res: any) => {
@@ -36,35 +36,18 @@ export class AuthService {
           this.user = res.data.login;
           this.doLogin(this.user);
           return this.user;
-          // return throwError(JSON.parse(`{
-          //   "headers": { "normalizedNames": {}, "lazyUpdate": null },
-          //   "status": 400,
-          //   "statusText": "Bad Request",
-          //   "url": "http://meslis-test-3.corp.deecoob.com:58192/graphql",
-          //   "ok": false,
-          //   "name": "HttpErrorResponse",
-          //   "message": "Http failure response for http://meslis-test-3.corp.deecoob.com:58192/graphql: 400 Bad Request",
-          //   "error": {
-          //     "data": { "login": null },
-          //     "errors": [
-          //       {
-          //         "message": "Login is blocked until 02/25/2019 12:07:50",
-          //         "extensions": { "code": "Login blocked" }
-          //       }
-          //     ]
-          //   }
-          // }`));
-        }),
-        catchError(err => {
-          if (err.error.errors[0].extensions === 'Login blocked') {
-            this.dialog.open(BlockedDialogComponent, {
-              data: { message: err.error.errors[0].message }
-            });
-          }
-          console.log('Blocked', err);
-          return throwError(err);
         })
+        // catchError((err, x) => {
+        //   // if (err.error.errors[0].extensions === 'Login blocked') {
+        //   //   this.dialog.open(BlockedDialogComponent, {
+        //   //     data: { message: err.error.errors[0].message }
+        //   //   });
+        //   // }
+        //   console.log('Blocked', err);
+        //   return throwError(err);
+        // })
       );
+    return response;
   }
 
   logout(): void {
@@ -107,3 +90,5 @@ export class AuthService {
     window.localStorage.removeItem('username');
   }
 }
+
+export function handleError(err) {}

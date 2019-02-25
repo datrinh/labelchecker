@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import sjcl from 'sjcl';
+import { MatDialog } from '@angular/material';
+import { HelpComponent } from '../help/help.component';
 
 export const MESLISPW =
   '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08';
@@ -23,9 +25,17 @@ export class LoginComponent implements OnInit {
   user: User;
   username = '';
   password = '';
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!this.auth.isLogged()) {
+      setTimeout(() => this.openHelpPage());
+    }
+  }
 
   login() {
     this.showSpinner = true;
@@ -42,6 +52,13 @@ export class LoginComponent implements OnInit {
           console.log(err);
         }
       );
+  }
+
+  openHelpPage() {
+    this.dialog.open(HelpComponent, {
+      height: '80%',
+      width: '80%'
+    });
   }
 
   private generateSha256(input) {

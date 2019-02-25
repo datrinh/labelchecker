@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { LoggedOutComponent } from './logged-out/logged-out.component';
 import { HelpComponent } from './help/help.component';
 import { BlockedDialogComponent } from './blocked-dialog/blocked-dialog.component';
+import { CoffeeComponent } from './coffee/coffee.component';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -46,7 +47,8 @@ const MaterialModules = [
     NavbarComponent,
     LoggedOutComponent,
     HelpComponent,
-    BlockedDialogComponent
+    BlockedDialogComponent,
+    CoffeeComponent
   ],
   imports: [
     BrowserModule,

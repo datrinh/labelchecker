@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { LabelingComponent } from './labeling/labeling.component';
 import { AuthGuard } from './auth/auth.guard';
 import { LoggedOutComponent } from './logged-out/logged-out.component';
+import { CoffeeComponent } from './coffee/coffee.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
   },
   { path: 'labeling', component: LabelingComponent, canActivate: [AuthGuard] },
   { path: 'loggedOut', component: LoggedOutComponent },
+  { path: 'coffee', component: CoffeeComponent },
   { path: '', pathMatch: 'full', redirectTo: '/labeling' }
 ];
 

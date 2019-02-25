@@ -16,18 +16,7 @@ export class NavbarComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
-  ngOnInit() {
-    if (!this.auth.isLogged()) {
-      setTimeout(() => this.openHelpPage());
-    }
-  }
-
-  openHelpPage() {
-    this.dialog.open(HelpComponent, {
-      height: '80%',
-      width: '80%'
-    });
-  }
+  ngOnInit() {}
 
   logout() {
     this.auth.logout();
