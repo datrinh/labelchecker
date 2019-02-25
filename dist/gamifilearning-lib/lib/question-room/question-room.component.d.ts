@@ -11,12 +11,14 @@ export interface Reward {
 }
 export declare class QuestionRoomComponent implements OnInit, OnChanges {
     private question;
-    private gamification;
     private dialog;
     private snack;
+    private gf;
     currentQuestion: number;
     tempAnswers: Answer[];
     lockedRewards: any;
+    isLoading: boolean;
+    thanksGif: any;
     maxProgress: number;
     done: number;
     currentInstance: any;
@@ -26,7 +28,7 @@ export declare class QuestionRoomComponent implements OnInit, OnChanges {
     showProgressbar: boolean;
     answerMode: string;
     selection: MatSelectionList;
-    constructor(question: QuestionService, gamification: GamificationService, dialog: MatDialog, snack: MatSnackBar);
+    constructor(question: QuestionService, dialog: MatDialog, snack: MatSnackBar, gf: GamificationService);
     ngOnInit(): void;
     ngOnChanges(changes: any): void;
     isDone(): boolean;
@@ -42,4 +44,5 @@ export declare class QuestionRoomComponent implements OnInit, OnChanges {
     private doUpdateRewards;
     submitAnswer(answer: string): void;
     mockAchievementCheck(): void;
+    finish(): void;
 }

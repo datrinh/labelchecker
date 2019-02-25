@@ -22,4 +22,11 @@ export class NavbarComponent implements OnInit {
     this.auth.logout();
     this.router.navigate(['loggedOut']);
   }
+
+  openHelpPage() {
+    this.dialog.open(HelpComponent, {
+      height: '80%',
+      width: '80%'
+    });
+  }
 }
