@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { QuestionService } from 'gamifilearning-lib';
 import { map, flatMap } from 'rxjs/operators';
 import { CommunicationService } from '../communication/communication.service';
@@ -11,12 +11,13 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './labeling.component.html',
   styleUrls: ['./labeling.component.scss']
 })
-export class LabelingComponent implements OnInit {
+export class LabelingComponent implements OnInit, OnDestroy {
   currentInstance;
   questions;
   progress;
   rewards = REWARDS;
   answers;
+  sub;
   constructor(
     private communication: CommunicationService,
     private question: QuestionService,
@@ -29,19 +30,17 @@ export class LabelingComponent implements OnInit {
     this.progress = this.communication.getProgress();
     this.answers = this.communication.getAnswers();
 
-    this.question.answers$
+    this.sub = this.question.answers$
       .pipe(
         flatMap((answers: Answer[]) => this.communication.saveAnswers(answers)),
         flatMap(_ => this.communication.getNextDocument())
       )
-      .subscribe(
-        res => {
-          console.log(res);
-        },
-        err => {
-          if (err.error === '') {
-          }
-        }
-      );
+      .subscribe(res => {
+        console.log(res);
+      });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

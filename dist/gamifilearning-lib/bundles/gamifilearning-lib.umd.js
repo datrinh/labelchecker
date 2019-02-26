@@ -622,7 +622,7 @@
                     this.done++;
                     this.updateRewards();
                 }
-                this.mockAchievementCheck();
+                // this.mockAchievementCheck();
             };
         /**
          * @return {?}
