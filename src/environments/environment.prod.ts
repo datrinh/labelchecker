@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  url: 'https://labelchecker.meslis.com:58192/graphql'
 };

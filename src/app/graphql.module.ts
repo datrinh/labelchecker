@@ -4,8 +4,9 @@ import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
+import { environment } from '../environments/environment';
 
-const uri = 'http://meslis-test-3.corp.deecoob.com:58192/graphql';
+const uri = environment.url;
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
