@@ -347,7 +347,7 @@ var RewardDialogComponent = /** @class */ (function () {
         this.data = data;
         this.trivia = this.gamification.getTrivia();
         this.thanksPic = this.gamification.getRandomGif('thanks');
-        this.moneyPic = this.gamification.getRandomGif('rich');
+        this.moneyPic = this.gamification.getRandomGif('money');
     }
     /**
      * @return {?}
@@ -361,7 +361,7 @@ var RewardDialogComponent = /** @class */ (function () {
     RewardDialogComponent.decorators = [
         { type: Component, args: [{
                     selector: 'gl-reward-dialog',
-                    template: "<h2 mat-dialog-title>Wohoo!</h2>\n<mat-dialog-content>\n  <p>\n    Du hast weitere 5 Euro verdient! Damit hast du insgesamt\n    <b>{{ total }} Euro</b> auf dem Konto!\n  </p>\n  <img src=\"{{ (moneyPic | async)?.images.original.url }}\" />\n  <h3>Hast du gewusst?</h3>\n  <p>{{ trivia | async }}</p>\n  <!-- <h2>And also</h2>\n  <img\n    src=\"{{ (thanksPic | async)?.images.original.url }}\"\n    alt=\"Belohnungs-GIF\"\n    width=\"75%\"\n  /> -->\n</mat-dialog-content>\n",
+                    template: "<h2 mat-dialog-title>Wohoo!</h2>\n<mat-dialog-content>\n  <p>\n    Du hast weitere 5 Euro verdient! Damit hast du insgesamt\n    <b>{{ total }} Euro</b> auf dem Konto!\n  </p>\n  <img src=\"{{ (moneyPic | async)?.images.original.url }}\" />\n  <div *ngIf=\"(trivia | async)\">\n    <h3>Hast du gewusst?</h3>\n    <p>{{ trivia | async }}</p>\n  </div>\n\n  <!-- <h2>And also</h2>\n  <img\n    src=\"{{ (thanksPic | async)?.images.original.url }}\"\n    alt=\"Belohnungs-GIF\"\n    width=\"75%\"\n  /> -->\n</mat-dialog-content>\n",
                     styles: [""]
                 }] }
     ];
@@ -385,7 +385,7 @@ var QuestionRoomComponent = /** @class */ (function () {
         this.gf = gf;
         this.currentQuestion = 0;
         this.tempAnswers = [];
-        this.isLoading = false;
+        this.isLoading = true;
         this.showProgressbar = true;
     }
     /**
@@ -397,7 +397,6 @@ var QuestionRoomComponent = /** @class */ (function () {
     function () {
         this.doUpdateRewards();
         this.thanksGif = this.gf.getRandomGif('party');
-        console.log(this.done, this.maxProgress);
     };
     /**
      * @param {?} changes
@@ -418,11 +417,20 @@ var QuestionRoomComponent = /** @class */ (function () {
     /**
      * @return {?}
      */
+    QuestionRoomComponent.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.currentInstance.text = '';
+    };
+    /**
+     * @return {?}
+     */
     QuestionRoomComponent.prototype.isDone = /**
      * @return {?}
      */
     function () {
-        return !(this.done < this.maxProgress);
+        return this.done != null && this.done >= this.maxProgress;
     };
     /**
      * @param {?} answer
