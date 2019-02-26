@@ -143,16 +143,18 @@ export class CommunicationService {
     // return of(['1', '2', '3', '4', '5']);
   }
 
-  saveAnswers(answers: Answer[]): Observable<boolean> {
+  saveAnswers(answers: Answer[]): Observable<Object> {
     if (answers.length) {
       console.log('Sending to backend:', answers);
       const answer: any = answers[0];
       answer.text = this.currentDocument.value.text;
-      this.http
-        .post('http://127.0.0.1:5000/label', JSON.stringify(answer))
-        .subscribe(res => {
-          console.log('Backend res:', res);
-        });
+      return this.http.post(
+        'http://127.0.0.1:5000/label',
+        JSON.stringify(answer)
+      );
+      // .subscribe(res => {
+      //   console.log('Backend res:', res);
+      // });
       // return this.apollo.mutate({
       //   mutation: gql`
       //     mutation saveDecision($decisions: [DecisionInput]!) {
@@ -168,7 +170,7 @@ export class CommunicationService {
       //   //   }
       //   // }
       // });
-      return of(true);
+      // return of(true);
     } else {
       return of(false);
     }

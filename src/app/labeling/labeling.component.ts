@@ -4,6 +4,7 @@ import { map, flatMap } from 'rxjs/operators';
 import { CommunicationService } from '../communication/communication.service';
 import { Answer } from '../communication/communication.interfaces';
 import { REWARDS } from './rewards';
+import { ChartService, ChartData } from '../chart/chart.service';
 
 @Component({
   selector: 'app-labeling',
@@ -18,7 +19,8 @@ export class LabelingComponent implements OnInit {
   answers;
   constructor(
     private communication: CommunicationService,
-    private question: QuestionService
+    private question: QuestionService,
+    private chart: ChartService
   ) {}
 
   ngOnInit() {
@@ -30,7 +32,10 @@ export class LabelingComponent implements OnInit {
     this.question.answers$
       .pipe(
         flatMap((answers: Answer[]) => this.communication.saveAnswers(answers)),
-        flatMap(_ => this.communication.getNextDocument())
+        flatMap((res: string) => {
+          this.chart.f1History = JSON.parse(res);
+          return this.communication.getNextDocument();
+        })
       )
       .subscribe();
   }

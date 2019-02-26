@@ -24,6 +24,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { LoggedOutComponent } from './logged-out/logged-out.component';
 import { HelpComponent } from './help/help.component';
+import { ChartComponent } from './chart/chart.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -44,7 +46,8 @@ const MaterialModules = [
     LoginComponent,
     NavbarComponent,
     LoggedOutComponent,
-    HelpComponent
+    HelpComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,8 @@ const MaterialModules = [
     GLModule,
     GraphQLModule,
     MaterialModules,
-    FormsModule
+    FormsModule,
+    NgxChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
