@@ -2,8 +2,8 @@ FROM node:8.11.3
 
 MAINTAINER Michael Schuster <michael.schuster@deecoob.com>
 
-WORKDIR /var/data/Labelchecker
-COPY . /var/data/Labelchecker
+WORKDIR /tmp/data/Labelchecker
+COPY . /tmp/data/Labelchecker
 
 ENV PATH /Labelchecker:$PATH
 
