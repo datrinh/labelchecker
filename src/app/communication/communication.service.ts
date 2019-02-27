@@ -19,13 +19,20 @@ export class CommunicationService {
     done: 99
   };
   mockData;
-  mockCounter = 0;
+  mockCounter;
   constructor(
     private apollo: Apollo,
     private auth: AuthService,
     private router: Router,
     private http: HttpClient
   ) {
+    // mock ml labeling
+    if (!localStorage.getItem('progress')) {
+      this.mockCounter = 0;
+      localStorage.setItem('progress', '0');
+    } else {
+      this.mockCounter = localStorage.getItem('progress');
+    }
     this.init();
   }
 
@@ -65,7 +72,9 @@ export class CommunicationService {
     //     })
     //   );
     return this.http.get<Document[]>('assets/mock_data_lc.json').pipe(
-      map(res => res[this.mockCounter++]),
+      map(res => {
+        return res[this.mockCounter];
+      }),
       map(res => {
         console.log(res);
         const nextDoc = {
@@ -148,6 +157,11 @@ export class CommunicationService {
       console.log('Sending to backend:', answers);
       const answer: any = answers[0];
       answer.text = this.currentDocument.value.text;
+
+      // mock
+      this.mockCounter++;
+      localStorage.setItem('progress', this.mockCounter);
+
       return this.http.post(
         'http://127.0.0.1:5000/label',
         JSON.stringify(answer)

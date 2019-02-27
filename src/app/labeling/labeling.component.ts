@@ -4,7 +4,7 @@ import { map, flatMap } from 'rxjs/operators';
 import { CommunicationService } from '../communication/communication.service';
 import { Answer } from '../communication/communication.interfaces';
 import { REWARDS } from './rewards';
-import { ChartService, ChartData } from '../chart/chart.service';
+import { ChartService } from '../chart/chart.service';
 
 @Component({
   selector: 'app-labeling',

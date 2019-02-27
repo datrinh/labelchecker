@@ -33,7 +33,7 @@ export class ChartService {
   private mapHistory(metrics): ChartData[] {
     const series = [];
     metrics['f1_history'].forEach((element, index) => {
-      series.push({ name: 'Interation: ' + index, value: element });
+      series.push({ name: 'Iteration: ' + index, value: element });
     });
     return [
       {
