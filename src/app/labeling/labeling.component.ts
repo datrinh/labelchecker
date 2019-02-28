@@ -40,5 +40,6 @@ export class LabelingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.question.reset();
   }
 }

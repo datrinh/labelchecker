@@ -149,6 +149,12 @@ class QuestionService {
     handleSubmittedAnswers(answers) {
         this.answers.next(answers);
     }
+    /**
+     * @return {?}
+     */
+    reset() {
+        this.answers.next([]);
+    }
 }
 QuestionService.decorators = [
     { type: Injectable, args: [{

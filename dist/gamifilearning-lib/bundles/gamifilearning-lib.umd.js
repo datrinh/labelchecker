@@ -222,6 +222,15 @@
             function (answers) {
                 this.answers.next(answers);
             };
+        /**
+         * @return {?}
+         */
+        QuestionService.prototype.reset = /**
+         * @return {?}
+         */
+            function () {
+                this.answers.next([]);
+            };
         QuestionService.decorators = [
             { type: i0.Injectable, args: [{
                         providedIn: 'root'

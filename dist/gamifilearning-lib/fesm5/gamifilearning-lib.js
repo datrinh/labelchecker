@@ -181,6 +181,15 @@ var QuestionService = /** @class */ (function () {
     function (answers) {
         this.answers.next(answers);
     };
+    /**
+     * @return {?}
+     */
+    QuestionService.prototype.reset = /**
+     * @return {?}
+     */
+    function () {
+        this.answers.next([]);
+    };
     QuestionService.decorators = [
         { type: Injectable, args: [{
                     providedIn: 'root'
