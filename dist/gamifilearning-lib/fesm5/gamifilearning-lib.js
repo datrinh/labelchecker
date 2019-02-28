@@ -7,7 +7,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialog, MatSnackBar, MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatProgressBarModule, MatInputModule, MatTableModule, MatToolbarModule, MatBadgeModule, MatListModule, MatProgressSpinnerModule, MatTooltipModule, MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { style, animation, animate, keyframes, trigger, transition, useAnimation } from '@angular/animations';
 import { FormsModule } from '@angular/forms';
-import { Component, Injectable, Inject, Pipe, defineInjectable, inject, Input, ViewChild, NgModule } from '@angular/core';
+import { Component, Injectable, Inject, Pipe, defineInjectable, inject, NgModule, Input, ViewChild } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
@@ -233,11 +233,19 @@ var GamificationService = /** @class */ (function () {
      */
     function (date) {
         if (date === void 0) { date = new Date(); }
-        return this.http.get(
-        // `http://numbersapi.com/${date.getMonth() + 1}/${date.getDate()}/date`,
-        'https://randomuselessfact.appspot.com/random.txt?language=de', {
-            responseType: 'text'
-        });
+        return this.http.get("https://numbersapi.p.rapidapi.com/" + (date.getMonth() +
+            1) + "/" + date.getDate() + "/date", 
+        // 'https://cors.io/?https://randomuselessfact.appspot.com/random.txt?language=de',
+        {
+            responseType: 'text',
+            headers: {
+                'X-RapidAPI-Key': '9817e98542msh661374e436e8e58p1d692ejsn7e0c852d8acc'
+            }
+        }
+        // 'https://cat-fact.herokuapp.com/facts/random', {
+        // }
+        );
+        // .pipe(map((res: any) => res.fact));
     };
     /**
      * @param {?} query

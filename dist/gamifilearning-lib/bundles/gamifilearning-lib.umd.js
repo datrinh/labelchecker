@@ -276,11 +276,19 @@
                 if (date === void 0) {
                     date = new Date();
                 }
-                return this.http.get(
-                // `http://numbersapi.com/${date.getMonth() + 1}/${date.getDate()}/date`,
-                'https://randomuselessfact.appspot.com/random.txt?language=de', {
-                    responseType: 'text'
-                });
+                return this.http.get("https://numbersapi.p.rapidapi.com/" + (date.getMonth() +
+                    1) + "/" + date.getDate() + "/date", 
+                // 'https://cors.io/?https://randomuselessfact.appspot.com/random.txt?language=de',
+                {
+                    responseType: 'text',
+                    headers: {
+                        'X-RapidAPI-Key': '9817e98542msh661374e436e8e58p1d692ejsn7e0c852d8acc'
+                    }
+                }
+                // 'https://cat-fact.herokuapp.com/facts/random', {
+                // }
+                );
+                // .pipe(map((res: any) => res.fact));
             };
         /**
          * @param {?} query
