@@ -219,6 +219,15 @@ var QuestionService = /** @class */ (function () {
     function (answers) {
         this.answers.next(answers);
     };
+    /**
+     * @return {?}
+     */
+    QuestionService.prototype.reset = /**
+     * @return {?}
+     */
+    function () {
+        this.answers.next([]);
+    };
     QuestionService.decorators = [
         { type: _angular_core__WEBPACK_IMPORTED_MODULE_9__["Injectable"], args: [{
                     providedIn: 'root'
@@ -1880,6 +1889,7 @@ var LabelingComponent = /** @class */ (function () {
     };
     LabelingComponent.prototype.ngOnDestroy = function () {
         this.sub.unsubscribe();
+        this.question.reset();
     };
     LabelingComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
