@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { map, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import { User } from '../communication/communication.interfaces';
 import { MatDialog } from '@angular/material';
-import { BlockedDialogComponent } from '../blocked-dialog/blocked-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,7 @@ import { BlockedDialogComponent } from '../blocked-dialog/blocked-dialog.compone
 export class AuthService {
   user: User;
 
-  constructor(private apollo: Apollo, private dialog: MatDialog) {}
+  constructor(private apollo: Apollo) {}
 
   login(username: string, password: string): Observable<User> {
     const response = this.apollo
@@ -32,20 +31,11 @@ export class AuthService {
       })
       .pipe(
         map((res: any) => {
-          console.log(res);
+          // console.log(res);
           this.user = res.data.login;
           this.doLogin(this.user);
           return this.user;
         })
-        // catchError((err, x) => {
-        //   // if (err.error.errors[0].extensions === 'Login blocked') {
-        //   //   this.dialog.open(BlockedDialogComponent, {
-        //   //     data: { message: err.error.errors[0].message }
-        //   //   });
-        //   // }
-        //   console.log('Blocked', err);
-        //   return throwError(err);
-        // })
       );
     return response;
   }
@@ -90,5 +80,3 @@ export class AuthService {
     window.localStorage.removeItem('username');
   }
 }
-
-export function handleError(err) {}

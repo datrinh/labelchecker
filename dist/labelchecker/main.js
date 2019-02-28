@@ -588,7 +588,6 @@ var QuestionRoomComponent = /** @class */ (function () {
         if (this.lockedRewards.length < tmpLocked.length) {
             this.claimReward(tmpLocked[0]);
         }
-        console.log(this.lockedRewards, tmpLocked);
     };
     /**
      * @private
@@ -606,7 +605,7 @@ var QuestionRoomComponent = /** @class */ (function () {
         locked.forEach(function (reward) {
             if ((_this.done / _this.maxProgress) * 100 >= reward.position) {
                 reward.unlocked = true;
-                console.log(reward);
+                // console.log(reward);
             }
         });
     };
@@ -1305,30 +1304,26 @@ var AuthGuard = /** @class */ (function () {
 /*!**************************************!*\
   !*** ./src/app/auth/auth.service.ts ***!
   \**************************************/
-/*! exports provided: AuthService, handleError */
+/*! exports provided: AuthService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthService", function() { return AuthService; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleError", function() { return handleError; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! graphql-tag */ "./node_modules/graphql-tag/src/index.js");
 /* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(graphql_tag__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var apollo_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! apollo-angular */ "./node_modules/apollo-angular/fesm5/ng.apollo.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-
 
 
 
 
 
 var AuthService = /** @class */ (function () {
-    function AuthService(apollo, dialog) {
+    function AuthService(apollo) {
         this.apollo = apollo;
-        this.dialog = dialog;
     }
     AuthService.prototype.login = function (username, password) {
         var _this = this;
@@ -1337,21 +1332,11 @@ var AuthService = /** @class */ (function () {
             query: graphql_tag__WEBPACK_IMPORTED_MODULE_3___default()(templateObject_1 || (templateObject_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__makeTemplateObject"](["\n           {\n             login(username: \"", "\", password: \"", "\") {\n               id,\n               username,\n               jwtToken {\n                 token\n               }\n             }\n           }\n         "], ["\n           {\n             login(username: \"", "\", password: \"", "\") {\n               id,\n               username,\n               jwtToken {\n                 token\n               }\n             }\n           }\n         "])), username, password)
         })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (res) {
-            console.log(res);
+            // console.log(res);
             _this.user = res.data.login;
             _this.doLogin(_this.user);
             return _this.user;
-        })
-        // catchError((err, x) => {
-        //   // if (err.error.errors[0].extensions === 'Login blocked') {
-        //   //   this.dialog.open(BlockedDialogComponent, {
-        //   //     data: { message: err.error.errors[0].message }
-        //   //   });
-        //   // }
-        //   console.log('Blocked', err);
-        //   return throwError(err);
-        // })
-        );
+        }));
         return response;
     };
     AuthService.prototype.logout = function () {
@@ -1387,12 +1372,11 @@ var AuthService = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
             providedIn: 'root'
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [apollo_angular__WEBPACK_IMPORTED_MODULE_4__["Apollo"], _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [apollo_angular__WEBPACK_IMPORTED_MODULE_4__["Apollo"]])
     ], AuthService);
     return AuthService;
 }());
 
-function handleError(err) { }
 var templateObject_1, templateObject_2;
 
 
@@ -1504,7 +1488,6 @@ var CoffeeComponent = /** @class */ (function () {
     CoffeeComponent.prototype.ngOnInit = function () {
         this.coffeeGif = this.gf.getRandomGif('coffee');
         this.message = localStorage.getItem('block_message');
-        console.log(this.coffeeGif);
     };
     CoffeeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1636,7 +1619,7 @@ var CommunicationService = /** @class */ (function () {
     };
     CommunicationService.prototype.saveAnswers = function (answers) {
         if (answers.length) {
-            console.log('Sending to backend:', answers);
+            // console.log('Sending to backend:', answers);
             return this.apollo.mutate({
                 mutation: graphql_tag__WEBPACK_IMPORTED_MODULE_3___default()(templateObject_3 || (templateObject_3 = tslib__WEBPACK_IMPORTED_MODULE_0__["__makeTemplateObject"](["\n          mutation saveDecision($decisions: [DecisionInput]!) {\n            saveDecision(decisions: $decisions)\n          }\n        "], ["\n          mutation saveDecision($decisions: [DecisionInput]!) {\n            saveDecision(decisions: $decisions)\n          }\n        "]))),
                 variables: {
@@ -1893,9 +1876,7 @@ var LabelingComponent = /** @class */ (function () {
         this.answers = this.communication.getAnswers();
         this.sub = this.question.answers$
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["flatMap"])(function (answers) { return _this.communication.saveAnswers(answers); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["flatMap"])(function (_) { return _this.communication.getNextDocument(); }))
-            .subscribe(function (res) {
-            console.log(res);
-        });
+            .subscribe();
     };
     LabelingComponent.prototype.ngOnDestroy = function () {
         this.sub.unsubscribe();
@@ -2068,7 +2049,7 @@ var LoginComponent = /** @class */ (function () {
         }, function (err) {
             _this.showSpinner = false;
             _this.password = '';
-            console.log(err);
+            console.error(err);
         });
     };
     LoginComponent.prototype.openHelpPage = function () {

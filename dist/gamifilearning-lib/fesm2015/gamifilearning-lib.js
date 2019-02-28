@@ -441,7 +441,6 @@ class QuestionRoomComponent {
         if (this.lockedRewards.length < tmpLocked.length) {
             this.claimReward(tmpLocked[0]);
         }
-        console.log(this.lockedRewards, tmpLocked);
     }
     /**
      * @private
@@ -454,7 +453,7 @@ class QuestionRoomComponent {
         locked.forEach(reward => {
             if ((this.done / this.maxProgress) * 100 >= reward.position) {
                 reward.unlocked = true;
-                console.log(reward);
+                // console.log(reward);
             }
         });
     }

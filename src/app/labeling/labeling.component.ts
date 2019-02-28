@@ -35,9 +35,7 @@ export class LabelingComponent implements OnInit, OnDestroy {
         flatMap((answers: Answer[]) => this.communication.saveAnswers(answers)),
         flatMap(_ => this.communication.getNextDocument())
       )
-      .subscribe(res => {
-        console.log(res);
-      });
+      .subscribe();
   }
 
   ngOnDestroy() {

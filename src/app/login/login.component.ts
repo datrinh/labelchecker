@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
         err => {
           this.showSpinner = false;
           this.password = '';
-          console.log(err);
+          console.error(err);
         }
       );
   }

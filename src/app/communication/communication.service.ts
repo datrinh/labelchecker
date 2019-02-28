@@ -123,7 +123,7 @@ export class CommunicationService {
 
   saveAnswers(answers: Answer[]): Observable<boolean> {
     if (answers.length) {
-      console.log('Sending to backend:', answers);
+      // console.log('Sending to backend:', answers);
       return this.apollo.mutate({
         mutation: gql`
           mutation saveDecision($decisions: [DecisionInput]!) {

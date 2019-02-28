@@ -550,7 +550,6 @@ var QuestionRoomComponent = /** @class */ (function () {
         if (this.lockedRewards.length < tmpLocked.length) {
             this.claimReward(tmpLocked[0]);
         }
-        console.log(this.lockedRewards, tmpLocked);
     };
     /**
      * @private
@@ -568,7 +567,7 @@ var QuestionRoomComponent = /** @class */ (function () {
         locked.forEach(function (reward) {
             if ((_this.done / _this.maxProgress) * 100 >= reward.position) {
                 reward.unlocked = true;
-                console.log(reward);
+                // console.log(reward);
             }
         });
     };

@@ -10,6 +10,7 @@
     "e2e": "ng e2e",
     "build_lib": "ng build gamifilearning-lib",
     "build_lib:watch": "ng build gamifilearning-lib --watch",
+    "build:prod": "ng build && ng build --prod --output-path dist/prod",
     "npm_pack": "cd dist/gamifilearning-lib && npm pack",
     "package": "npm run build_lib && npm run npm_pack"
   },

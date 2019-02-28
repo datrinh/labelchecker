@@ -14,6 +14,5 @@ export class CoffeeComponent implements OnInit {
   ngOnInit() {
     this.coffeeGif = this.gf.getRandomGif('coffee');
     this.message = localStorage.getItem('block_message');
-    console.log(this.coffeeGif);
   }
 }
