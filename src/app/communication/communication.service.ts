@@ -33,6 +33,7 @@ export class CommunicationService {
     } else {
       this.mockCounter = localStorage.getItem('progress');
     }
+    this.mockProgress.done = this.mockCounter;
     this.init();
   }
 
@@ -156,6 +157,9 @@ export class CommunicationService {
     if (answers.length) {
       console.log('Sending to backend:', answers);
       const answer: any = answers[0];
+      if (answer.answer === -1) {
+        return of(false);
+      }
       answer.text = this.currentDocument.value.text;
 
       // mock
