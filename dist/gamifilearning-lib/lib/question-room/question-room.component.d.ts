@@ -1,4 +1,4 @@
-import { OnInit, OnChanges } from '@angular/core';
+import { OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { QuestionService } from '../shared/question.service';
 import { MatSelectionList } from '@angular/material/list';
 import { GamificationService } from '../shared/gamification.service';
@@ -9,14 +9,16 @@ export interface Reward {
     unlocked: boolean;
     icon: string;
 }
-export declare class QuestionRoomComponent implements OnInit, OnChanges {
+export declare class QuestionRoomComponent implements OnInit, OnChanges, OnDestroy {
     private question;
-    private gamification;
     private dialog;
     private snack;
+    private gf;
     currentQuestion: number;
     tempAnswers: Answer[];
     lockedRewards: any;
+    isLoading: boolean;
+    thanksGif: any;
     maxProgress: number;
     done: number;
     currentInstance: any;
@@ -26,9 +28,10 @@ export declare class QuestionRoomComponent implements OnInit, OnChanges {
     showProgressbar: boolean;
     answerMode: string;
     selection: MatSelectionList;
-    constructor(question: QuestionService, gamification: GamificationService, dialog: MatDialog, snack: MatSnackBar);
+    constructor(question: QuestionService, dialog: MatDialog, snack: MatSnackBar, gf: GamificationService);
     ngOnInit(): void;
     ngOnChanges(changes: any): void;
+    ngOnDestroy(): void;
     isDone(): boolean;
     sendAnswer(answer: string): void;
     claimReward(reward: any): void;
@@ -42,4 +45,5 @@ export declare class QuestionRoomComponent implements OnInit, OnChanges {
     private doUpdateRewards;
     submitAnswer(answer: string): void;
     mockAchievementCheck(): void;
+    finish(): void;
 }

@@ -222,6 +222,15 @@
             function (answers) {
                 this.answers.next(answers);
             };
+        /**
+         * @return {?}
+         */
+        QuestionService.prototype.reset = /**
+         * @return {?}
+         */
+            function () {
+                this.answers.next([]);
+            };
         QuestionService.decorators = [
             { type: i0.Injectable, args: [{
                         providedIn: 'root'
@@ -240,7 +249,7 @@
     /** @type {?} */
     var GIPHY_API_KEY = 'n8VZGDtSpax8HM6j486SScMj5vMcavN2';
     /** @type {?} */
-    var GIPHY_URL = 'http://api.giphy.com/v1/gifs/search';
+    var GIPHY_URL = 'https://api.giphy.com/v1/gifs/search';
     var GamificationService = /** @class */ (function () {
         function GamificationService(http) {
             var _this = this;
@@ -276,9 +285,19 @@
                 if (date === void 0) {
                     date = new Date();
                 }
-                return this.http.get("http://numbersapi.com/" + (date.getMonth() + 1) + "/" + date.getDate() + "/date", {
-                    responseType: 'text'
-                });
+                return this.http.get("https://numbersapi.p.rapidapi.com/" + (date.getMonth() +
+                    1) + "/" + date.getDate() + "/date", 
+                // 'https://cors.io/?https://randomuselessfact.appspot.com/random.txt?language=de',
+                {
+                    responseType: 'text',
+                    headers: {
+                        'X-RapidAPI-Key': '9817e98542msh661374e436e8e58p1d692ejsn7e0c852d8acc'
+                    }
+                }
+                // 'https://cat-fact.herokuapp.com/facts/random', {
+                // }
+                );
+                // .pipe(map((res: any) => res.fact));
             };
         /**
          * @param {?} query
@@ -294,7 +313,7 @@
                     .get(GIPHY_URL, {
                     params: {
                         api_key: GIPHY_API_KEY,
-                        limit: '50',
+                        limit: '20',
                         rating: 'g',
                         q: query
                     }
@@ -392,7 +411,7 @@
             this.data = data;
             this.trivia = this.gamification.getTrivia();
             this.thanksPic = this.gamification.getRandomGif('thanks');
-            this.moneyPic = this.gamification.getRandomGif('rich');
+            this.moneyPic = this.gamification.getRandomGif('money');
         }
         /**
          * @return {?}
@@ -406,7 +425,7 @@
         RewardDialogComponent.decorators = [
             { type: i0.Component, args: [{
                         selector: 'gl-reward-dialog',
-                        template: "<h2 mat-dialog-title>Wohoo!</h2>\n<mat-dialog-content>\n  <p>\n    Du hast weitere 5 Euro verdient! Damit hast du insgesamt\n    <b>{{ total }} Euro</b> auf dem Konto!\n  </p>\n  <img src=\"{{ (moneyPic | async)?.images.original.url }}\" />\n  <h3>Hast du gewusst?</h3>\n  <p>{{ trivia | async }}</p>\n  <!-- <h2>And also</h2>\n  <img\n    src=\"{{ (thanksPic | async)?.images.original.url }}\"\n    alt=\"Belohnungs-GIF\"\n    width=\"75%\"\n  /> -->\n</mat-dialog-content>\n",
+                        template: "<h2 mat-dialog-title>Wohoo!</h2>\n<mat-dialog-content>\n  <p>\n    Du hast weitere 5 Euro verdient! Damit hast du insgesamt\n    <b>{{ total }} Euro</b> auf dem Konto!\n  </p>\n  <img src=\"{{ (moneyPic | async)?.images.original.url }}\" />\n  <div *ngIf=\"(trivia | async)\">\n    <h3>Hast du gewusst?</h3>\n    <p>{{ trivia | async }}</p>\n  </div>\n\n  <!-- <h2>And also</h2>\n  <img\n    src=\"{{ (thanksPic | async)?.images.original.url }}\"\n    alt=\"Belohnungs-GIF\"\n    width=\"75%\"\n  /> -->\n</mat-dialog-content>\n",
                         styles: [""]
                     }] }
         ];
@@ -425,13 +444,14 @@
      * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var QuestionRoomComponent = /** @class */ (function () {
-        function QuestionRoomComponent(question, gamification, dialog, snack) {
+        function QuestionRoomComponent(question, dialog, snack, gf) {
             this.question = question;
-            this.gamification = gamification;
             this.dialog = dialog;
             this.snack = snack;
+            this.gf = gf;
             this.currentQuestion = 0;
             this.tempAnswers = [];
+            this.isLoading = true;
             this.showProgressbar = true;
         }
         /**
@@ -442,7 +462,7 @@
          */
             function () {
                 this.doUpdateRewards();
-                console.log(this.done, this.maxProgress);
+                this.thanksGif = this.gf.getRandomGif('party');
             };
         /**
          * @param {?} changes
@@ -456,6 +476,18 @@
                 if (changes.done) {
                     this.doUpdateRewards();
                 }
+                if (changes.currentInstance) {
+                    this.isLoading = false;
+                }
+            };
+        /**
+         * @return {?}
+         */
+        QuestionRoomComponent.prototype.ngOnDestroy = /**
+         * @return {?}
+         */
+            function () {
+                this.currentInstance.text = '';
             };
         /**
          * @return {?}
@@ -464,7 +496,7 @@
          * @return {?}
          */
             function () {
-                return !(this.done < this.maxProgress);
+                return this.done != null && this.done >= this.maxProgress;
             };
         /**
          * @param {?} answer
@@ -574,7 +606,6 @@
                 if (this.lockedRewards.length < tmpLocked.length) {
                     this.claimReward(tmpLocked[0]);
                 }
-                console.log(this.lockedRewards, tmpLocked);
             };
         /**
          * @private
@@ -592,7 +623,7 @@
                 locked.forEach(function (reward) {
                     if ((_this.done / _this.maxProgress) * 100 >= reward.position) {
                         reward.unlocked = true;
-                        console.log(reward);
+                        // console.log(reward);
                     }
                 });
             };
@@ -610,13 +641,14 @@
                     this.currentQuestion++;
                 }
                 else {
+                    this.isLoading = true;
                     // One Iteration of Question-Package done
                     this.sendAnswer(answer);
                     this.currentQuestion = 0;
                     this.done++;
                     this.updateRewards();
                 }
-                this.mockAchievementCheck();
+                // this.mockAchievementCheck();
             };
         /**
          * @return {?}
@@ -633,10 +665,19 @@
                     });
                 }
             };
+        /**
+         * @return {?}
+         */
+        QuestionRoomComponent.prototype.finish = /**
+         * @return {?}
+         */
+            function () {
+                window.open('https://goo.gl/forms/BzagdIsUOy6hA2wB2', '_blank');
+            };
         QuestionRoomComponent.decorators = [
             { type: i0.Component, args: [{
                         selector: 'gl-question-room',
-                        template: "<section\r\n  (keyup)=\"onKey($event)\"\r\n  class=\"content\"\r\n  *ngIf=\"currentInstance\"\r\n  tabindex=\"-1\"\r\n>\r\n  <div class=\"progressbar-container\" *ngIf=\"showProgressbar\">\r\n    <span class=\"progress-label\">{{ done }} / {{ maxProgress }}</span>\r\n\r\n    <mat-progress-bar\r\n      mode=\"determinate\"\r\n      value=\"{{ (done / maxProgress) * 100 }}\"\r\n    ></mat-progress-bar>\r\n    <div\r\n      class=\"reward-icon\"\r\n      *ngFor=\"let reward of rewards\"\r\n      [ngStyle]=\"{ 'left.%': reward.position }\"\r\n    >\r\n      <!-- <i\r\n        *ngIf=\"reward.unlocked;else locked\"\r\n        class=\"fas fa-gift unlocked\"\r\n        matTooltip=\"\"\r\n        [matTooltipDisabled]=\"reward.unlocked\"\r\n      ></i> -->\r\n      <i\r\n        class=\"fas fa-gift\"\r\n        [@unlockReward]=\"reward.unlocked\"\r\n        [ngClass]=\"{ unlocked: reward.unlocked }\"\r\n        [matTooltip]=\"\r\n          reward.unlocked ? reward.total + ' Euro' : 'Noch nicht erreicht!'\r\n        \"\r\n      ></i>\r\n      <!-- <img\r\n        src=\"assets/gift.png\"\r\n        [@unlockReward]=\"reward.unlocked\"\r\n        [ngClass]=\"{ unlocked: reward.unlocked }\"\r\n        (click)=\"claimReward(reward.unlocked)\"\r\n        matTooltip=\"Noch nicht freigeschalten!\"\r\n        [matTooltipDisabled]=\"reward.unlocked\"\r\n      /> -->\r\n    </div>\r\n  </div>\r\n\r\n  <mat-card class=\"text-card\">\r\n    <!-- <p *ngIf=\"!isDone(); else labelingDone\" [@fadeIn]=\"done\"> -->\r\n    <p *ngIf=\"!isDone(); else labelingDone\">\r\n      {{ currentInstance.text }}\r\n    </p>\r\n    <ng-template #labelingDone>\r\n      <div class=\"spinner-container\">\r\n        <mat-spinner></mat-spinner>\r\n        <p>Verarbeite Daten...</p>\r\n      </div>\r\n    </ng-template>\r\n  </mat-card>\r\n\r\n  <mat-card class=\"question-card\" *ngIf=\"!isDone()\">\r\n    <mat-card-header class=\"question-text\">\r\n      <mat-card-title>\r\n        <span [innerHtml]=\"questions[currentQuestion] | translate\"></span>\r\n      </mat-card-title>\r\n    </mat-card-header>\r\n    <mat-card-content>\r\n      <mat-card-actions\r\n        *ngIf=\"answerMode === 'binary'\"\r\n        class=\"answer-buttons-container\"\r\n      >\r\n        <button\r\n          mat-button\r\n          *ngFor=\"let answer of answers\"\r\n          class=\"answer-button\"\r\n          [ngClass]=\"answer\"\r\n          (click)=\"submitAnswer(answer)\"\r\n        >\r\n          {{ answer | translate }}\r\n        </button>\r\n      </mat-card-actions>\r\n      <mat-card-actions\r\n        *ngIf=\"answerMode === 'stars'\"\r\n        class=\"answer-buttons-container\"\r\n      >\r\n        <!-- <button mat-button disabled class=\"rating-info\">Wenig</button> -->\r\n        <button\r\n          mat-button\r\n          *ngFor=\"let answer of answers\"\r\n          class=\"answer-button\"\r\n          [ngClass]=\"answer\"\r\n          (click)=\"submitAnswer(answer)\"\r\n        >\r\n          {{ answer | translate }}\r\n        </button>\r\n        <!-- <button mat-button disabled class=\"rating-info\">Viel</button> -->\r\n      </mat-card-actions>\r\n    </mat-card-content>\r\n  </mat-card>\r\n</section>\r\n",
+                        template: "<section\r\n  (keyup)=\"onKey($event)\"\r\n  class=\"content\"\r\n  *ngIf=\"currentInstance\"\r\n  tabindex=\"-1\"\r\n>\r\n  <div class=\"progressbar-container\" *ngIf=\"showProgressbar\">\r\n    <span class=\"progress-label\">{{ done }} / {{ maxProgress }}</span>\r\n\r\n    <mat-progress-bar\r\n      mode=\"determinate\"\r\n      value=\"{{ (done / maxProgress) * 100 }}\"\r\n    ></mat-progress-bar>\r\n    <div\r\n      class=\"reward-icon\"\r\n      *ngFor=\"let reward of rewards\"\r\n      [ngStyle]=\"{ 'left.%': reward.position }\"\r\n    >\r\n      <i\r\n        class=\"fas fa-gift\"\r\n        [@unlockReward]=\"reward.unlocked\"\r\n        [ngClass]=\"{ unlocked: reward.unlocked }\"\r\n        [matTooltip]=\"\r\n          reward.unlocked ? reward.total + ' Euro' : 'Noch nicht erreicht!'\r\n        \"\r\n      ></i>\r\n    </div>\r\n  </div>\r\n\r\n  <mat-card class=\"text-card\" *ngIf=\"!isDone(); else lablingDone\">\r\n    <!-- <p *ngIf=\"!isDone(); else labelingDone\" [@fadeIn]=\"done\"> -->\r\n    <p *ngIf=\"!isLoading; else loading\">\r\n      {{ currentInstance.text }}\r\n    </p>\r\n    <ng-template #loading>\r\n      <div class=\"spinner-container\">\r\n        <mat-spinner></mat-spinner>\r\n      </div>\r\n    </ng-template>\r\n  </mat-card>\r\n\r\n  <ng-template #lablingDone>\r\n    <mat-card class=\"labeling-done-card\">\r\n      <mat-card-header>\r\n        <mat-card-title>Du hast es geschafft!</mat-card-title>\r\n      </mat-card-header>\r\n      <img\r\n        mat-card-image\r\n        src=\"{{ (thanksGif | async)?.images.original.url }}\"\r\n      />\r\n      <mat-card-content>\r\n        <p>\r\n          Du hast die letzten 5 Euro verdient! Damit hast du insgesamt\r\n          <b>75 Euro</b> auf dem Konto!\r\n        </p>\r\n        <p>\r\n          But wait! Um Deine Arbeit abzuschlie\u00DFen, nimm dir bitte noch 1-2\r\n          Minuten f\u00FCr diesen Fragebogen.\r\n        </p>\r\n      </mat-card-content>\r\n      <mat-card-actions>\r\n        <button\r\n          mat-raised-button\r\n          (click)=\"finish()\"\r\n          style=\"width: 100%\"\r\n          color=\"primary\"\r\n        >\r\n          Arbeit abschlie\u00DFen\r\n        </button>\r\n      </mat-card-actions>\r\n    </mat-card>\r\n  </ng-template>\r\n\r\n  <mat-card class=\"question-card\" *ngIf=\"!isDone()\">\r\n    <mat-progress-bar\r\n      mode=\"determinate\"\r\n      value=\"{{ ((currentQuestion + 1) / questions.length) * 100 }}\"\r\n    ></mat-progress-bar>\r\n    <div class=\"question-card-wrapper\">\r\n      <mat-card-header class=\"question-text\">\r\n        <mat-card-title>\r\n          <span [innerHtml]=\"questions[currentQuestion] | translate\"></span>\r\n        </mat-card-title>\r\n      </mat-card-header>\r\n      <mat-card-content>\r\n        <mat-card-actions\r\n          *ngIf=\"answerMode === 'binary'\"\r\n          class=\"answer-buttons-container\"\r\n        >\r\n          <button\r\n            mat-button\r\n            *ngFor=\"let answer of answers\"\r\n            class=\"answer-button\"\r\n            [ngClass]=\"answer\"\r\n            (click)=\"submitAnswer(answer)\"\r\n          >\r\n            {{ answer | translate }}\r\n          </button>\r\n        </mat-card-actions>\r\n        <mat-card-actions\r\n          *ngIf=\"answerMode === 'stars'\"\r\n          class=\"answer-buttons-container\"\r\n        >\r\n          <!-- <button mat-button disabled class=\"rating-info\">Wenig</button> -->\r\n          <button\r\n            mat-button\r\n            *ngFor=\"let answer of answers\"\r\n            class=\"answer-button\"\r\n            [ngClass]=\"answer\"\r\n            (click)=\"submitAnswer(answer)\"\r\n            [disabled]=\"isLoading\"\r\n          >\r\n            {{ answer | translate }}\r\n          </button>\r\n          <!-- <button mat-button disabled class=\"rating-info\">Viel</button> -->\r\n        </mat-card-actions>\r\n      </mat-card-content>\r\n    </div>\r\n  </mat-card>\r\n</section>\r\n",
                         animations: [
                             animations$1.trigger('fadeIn', [
                                 animations$1.transition(':increment', [
@@ -658,16 +699,16 @@
                                 ])
                             ])
                         ],
-                        styles: [".content{display:-ms-grid;display:grid;-ms-grid-rows:100px 400px 30px 1fr 30px 60px;grid-template-rows:100px 400px 30px 1fr 30px 60px;-ms-grid-columns:1fr;grid-template-columns:1fr}.content:focus{outline:solid 0}.question-text{justify-content:center}.question-text mat-card-title{font-weight:400}.progressbar-container{-ms-grid-row:1;-ms-grid-row-span:1;grid-row:1/2;-ms-grid-row-align:center;align-self:center;position:relative;text-align:center}.progressbar-container mat-progress-bar{margin-bottom:8px}.progressbar-container .reward-icon{display:block;position:absolute;-webkit-transform:translateX(-50%);transform:translateX(-50%);cursor:pointer;color:#9c9c9c}.progressbar-container .unlocked{color:#3f51b5}.progress-label{font-weight:700;line-height:2}.text-card{display:flex;justify-content:center;-ms-grid-row:2;-ms-grid-row-span:1;grid-row:2/3;overflow:auto}.question-area{-ms-grid-row:4;-ms-grid-row-span:3;grid-row:4/7}.question-card{-ms-grid-row:4;-ms-grid-row-span:1;grid-row:4/5}.button-list,.submit-button{-ms-grid-row:6;-ms-grid-row-span:1;grid-row:6/7;-ms-grid-row-align:stretch;align-self:stretch;-ms-grid-column-align:stretch;justify-self:stretch}.mat-card-header-text{text-align:center}.answer-buttons-container{display:flex}.answer-buttons-container .yes{flex-grow:1}.answer-buttons-container .maybe{flex-grow:.5}.answer-buttons-container .no{flex-grow:1}.answer-buttons-container .answer-button{height:60px;flex-grow:1}.answer-buttons-container .rating-info{flex-grow:1;color:#9c9c9c}.spinner-container{text-align:center;-ms-grid-row-align:center;align-self:center}.spinner-container mat-spinner{margin:auto}"]
+                        styles: [".content{display:-ms-grid;display:grid;-ms-grid-rows:100px 400px 30px 1fr 30px 60px;grid-template-rows:100px 400px 30px 1fr 30px 60px;-ms-grid-columns:1fr;grid-template-columns:1fr}.content:focus{outline:solid 0}.question-text{justify-content:center}.question-text mat-card-title{font-weight:400}.question-card-wrapper{padding:16px 16px 0}.progressbar-container{-ms-grid-row:1;-ms-grid-row-span:1;grid-row:1/2;-ms-grid-row-align:center;align-self:center;position:relative;text-align:center}.progressbar-container mat-progress-bar{margin-bottom:8px}.progressbar-container .reward-icon{display:block;position:absolute;-webkit-transform:translateX(-50%);transform:translateX(-50%);cursor:pointer;color:#9c9c9c}.progressbar-container .unlocked{color:#3f51b5}.progress-label{font-weight:700;line-height:2}.text-card{display:flex;justify-content:center;-ms-grid-row:2;-ms-grid-row-span:1;grid-row:2/3;overflow:auto}.text-card p{white-space:pre-line;width:100%}.question-area{-ms-grid-row:4;-ms-grid-row-span:3;grid-row:4/7}.question-card{-ms-grid-row:4;-ms-grid-row-span:1;grid-row:4/5;padding:0}.button-list,.submit-button{-ms-grid-row:6;-ms-grid-row-span:1;grid-row:6/7;-ms-grid-row-align:stretch;align-self:stretch;-ms-grid-column-align:stretch;justify-self:stretch}.mat-card-header-text{text-align:center}.answer-buttons-container{display:flex}.answer-buttons-container .yes{flex-grow:1}.answer-buttons-container .maybe{flex-grow:.5}.answer-buttons-container .no{flex-grow:1}.answer-buttons-container .answer-button{height:60px;flex-grow:1}.answer-buttons-container .rating-info{flex-grow:1;color:#9c9c9c}.spinner-container{text-align:center;-ms-grid-row-align:center;align-self:center}.spinner-container mat-spinner{margin:auto}.labeling-done-card{width:50%;margin-left:auto;margin-right:auto}"]
                     }] }
         ];
         /** @nocollapse */
         QuestionRoomComponent.ctorParameters = function () {
             return [
                 { type: QuestionService },
-                { type: GamificationService },
                 { type: material.MatDialog },
-                { type: material.MatSnackBar }
+                { type: material.MatSnackBar },
+                { type: GamificationService }
             ];
         };
         QuestionRoomComponent.propDecorators = {

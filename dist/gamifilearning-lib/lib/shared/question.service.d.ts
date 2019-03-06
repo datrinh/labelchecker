@@ -14,4 +14,5 @@ export declare class QuestionService {
      */
     getTopInstances(data: JsonFeature[], number?: number): JsonFeature[];
     handleSubmittedAnswers(answers: Answer[]): void;
+    reset(): void;
 }
